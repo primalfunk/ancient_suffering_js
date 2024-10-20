@@ -16,12 +16,9 @@ export function updateButtons(exits, moveCallback) {
   const talkButton = document.getElementById("talk-btn");
   const pickUpButton = document.getElementById("pick-up-btn");
   const inventoryButton = document.getElementById("inventory-btn");
-
-  // Clear all existing buttons in each container
   directionalButtonContainer.innerHTML = '';
   actionButtonContainer.innerHTML = '';
 
-  // Create and append directional buttons
   if (exits.north) {
     const northBtn = createDirectionButton('North', 'north-btn', () => moveCallback('north'));
     directionalButtonContainer.appendChild(northBtn);
@@ -39,7 +36,6 @@ export function updateButtons(exits, moveCallback) {
     directionalButtonContainer.appendChild(westBtn);
   }
 
-  // Action buttons (e.g. Talk, Pick Up, Inventory)
   if (talkButton) {
     actionButtonContainer.appendChild(talkButton); 
   }
@@ -77,7 +73,6 @@ export function hideTalkButton() {
   }
 }
 export function showYesNoChoice(npc, player) {
-  // Show the overlay
   const overlayContainer = document.getElementById("overlay-container");
   const overlayMessage = document.getElementById("overlay-message");
 
@@ -128,7 +123,7 @@ export function hidePickUpButton() {
 
 export function showInventoryButton(player) {
   const inventoryButton = document.getElementById("inventory-btn");
-  if (inventoryButton) {  // Ensure the button exists
+  if (inventoryButton) {
     if (player.hasItemsInInventory()) {
       inventoryButton.style.display = "block";
     } else {

@@ -1,6 +1,6 @@
 export class GameStateManager {
     constructor() {
-      this.currentState = 'traversal';  // Default state
+      this.currentState = 'traversal';
     }
   
     setState(newState) {

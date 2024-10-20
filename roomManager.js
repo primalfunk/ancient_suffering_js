@@ -8,7 +8,7 @@ export function updateRoom(player, gameState) {
     if (!gameState.isTraversal()) return;
 
     const currentRoom = getRoom(player.currentRoom);
-    updateLog(`*** ${currentRoom.title} ***`);
+    updateLog(`*-* ${currentRoom.title} *-*`);
     updateLog(currentRoom.description);
 
     if (currentRoom.npcs.length > 0) {

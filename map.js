@@ -44,8 +44,15 @@ export const rooms = {
   'room7': {
     title: "Outpost",
     description: "You arrive at a rugged outpost surrounded by towering trees and the distant sounds of nature. The smell of smoke from the campfire fills the air, and a Grizzled Veteran sits nearby, polishing his well-worn weapons. He looks like he's seen many battles and could teach a thing or two to a willing student.",
-    exits: { east: 'room5' },
+    exits: { west: 'room8', east: 'room5' },
     npcs: ['npc5'],
+    items: []
+  },
+  'room8': {
+    title: "Edge of the Forest",
+    description: "Back to your east, the structure of the outpost juts up before the town proper. Before you to the west, north and south lies the beginnings of a vast forest of elm, oak and birch trees.",
+    exits: { east: 'room7' },
+    npcs: [],
     items: []
   }
 };

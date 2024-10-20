@@ -1,6 +1,6 @@
 import { getRoom } from './map.js';
 import { updateLog } from './ui.js';
-import { updateRoom, updateRoomAndItems } from './roomManager.js'; 
+import { updateRoomAndItems } from './roomManager.js'; 
 
   export function move(direction, player, gameState) {
     if (!gameState.isTraversal()) return;

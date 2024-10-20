@@ -14,14 +14,14 @@ function showAsciiArt() {
   fetch("asciiArt.txt")
     .then((response) => response.text())
     .then((asciiArt) => {
-      updateLog(asciiArt, true);  // Render ASCII art first
-      updateRoomAndItems(player, gameState);  // Only update room after ASCII art is shown
+      updateLog(asciiArt, true);
+      updateRoomAndItems(player, gameState);
     })
     .catch((error) => console.error("Error loading ASCII art:", error));
 }
 
 function initializeGame() {
-  showAsciiArt();  // Only call showAsciiArt on game load, no need to update room again here
+  showAsciiArt();
 }
 
 document.getElementById("north-btn").addEventListener("click", () => move("north", player, gameState));

@@ -3,7 +3,14 @@ export class Player {
     this.class = 'Adventurer';
     this.level = 1;
     this.experience = 0;
-    this.health = 100;
+    this.hp = 20;
+    this.mp = 10;
+    this.str = 1;
+    this.dex = 1;
+    this.int = 1;
+    this.wis = 1;
+    this.con = 1;
+
     this.inventory = [];
     this.currentRoom = 'room1';
   }
@@ -17,7 +24,7 @@ export class Player {
     this.class = newClass;
     console.log(`You have changed class to ${newClass}.`);
   }
-  
+
   hasItemsInInventory() {
     return this.inventory.length > 0;
   }

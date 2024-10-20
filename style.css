@@ -22,7 +22,7 @@ body {
   padding: 10px;
   margin-bottom: 20px;
   background-color: black;
-  color: green;
+  color: rgb(34, 190, 34);
 }
 
 /* Directional buttons */
@@ -44,7 +44,7 @@ button {
   padding: 10px 20px;
   margin: 5px;
   border-radius: 5px;
-  border: 2px solid green;
+  border: 2px solid rgb(65, 196, 65);
   background-color: #222;
   color: green;
   cursor: pointer;
