@@ -1,0 +1,89 @@
+body {
+  background-color: black;
+  color: green;
+  font-family: 'Courier New', monospace;
+}
+
+#game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 90vw;
+  margin: 0 auto;
+  padding: 20px;
+  border: 2px solid green;
+}
+
+/* Styling for the text log */
+#text-log {
+  height: 70vh;
+  overflow-y: scroll;
+  border: 1px solid green;
+  padding: 10px;
+  margin-bottom: 20px;
+  background-color: black;
+  color: green;
+}
+
+/* Directional buttons */
+#directional-button-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+/* Action buttons */
+#action-button-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+/* Button styles */
+button {
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 5px;
+  border: 2px solid green;
+  background-color: #222;
+  color: green;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #333;
+}
+
+button:disabled {
+  color: darkgreen;
+  border-color: darkgreen;
+}
+
+/* Overlay for yes/no choice */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.overlay-content {
+  background-color: #111;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  color: green;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.overlay-content p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}

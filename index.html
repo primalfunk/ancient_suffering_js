@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MUD Game</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="game-container">
+      <div id="text-log"></div>
+      <div id="button-container">
+        <!-- Directional Buttons -->
+        <div id="directional-button-container" class="button-row">
+          <button id="north-btn">North</button>
+          <button id="south-btn">South</button>
+          <button id="east-btn">East</button>
+          <button id="west-btn">West</button>
+        </div>
+
+        <!-- Action Buttons (Talk, Pick Up, Inventory) -->
+        <div id="action-button-container" class="button-row">
+          <button id="talk-btn" style="display: none">Talk</button>
+          <button id="pick-up-btn" style="display: none">Pick Up</button>
+          <button id="inventory-btn" style="display: none">Inventory</button>
+        </div>
+      </div>
+      <div id="overlay-container" style="display: none" class="overlay">
+        <div class="overlay-content">
+          <p id="overlay-message"></p>
+          <button id="yes-btn">Yes</button>
+          <button id="no-btn">No</button>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
