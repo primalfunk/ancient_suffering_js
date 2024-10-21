@@ -126,10 +126,35 @@ export function showInventoryButton(player) {
   if (inventoryButton) {
     if (player.hasItemsInInventory()) {
       inventoryButton.style.display = "block";
+      inventoryButton.onclick = () => showInventoryModal(player);
     } else {
       inventoryButton.style.display = "none";
     }
   } else {
     console.error("Inventory button not found in the DOM.");
   }
+}
+
+export function showInventoryModal(player) {
+  const inventoryModal = document.getElementById('inventory-modal');
+  const inventoryList = document.getElementById('inventory-list');
+  const closeInventoryBtn = document.getElementById('close-inventory-btn');
+
+  // Clear existing items in the inventory list
+  inventoryList.innerHTML = '';
+
+  // Add each item from the player's inventory
+  player.inventory.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = `${item.name} (${item.type})`;
+    inventoryList.appendChild(li);
+  });
+
+  // Show the modal
+  inventoryModal.style.display = 'flex';
+
+  // Add the close button functionality
+  closeInventoryBtn.onclick = () => {
+    inventoryModal.style.display = 'none';
+  };
 }

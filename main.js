@@ -1,7 +1,7 @@
 import { Player } from "./player.js";
 import { GameStateManager } from "./gameStateManager.js";
 import { move } from "./traversal.js";
-import { getRoom } from "./map.js";
+import { initializeMap, getRoom } from "./map.js";
 import { getNpc, startNpcInteraction } from "./npcs.js";
 import { updateRoomAndItems } from "./roomManager.js";
 import { updateLog } from "./ui.js";
@@ -12,12 +12,16 @@ player.currentRoom = "room1";
 
 function showAsciiArt() {
   fetch("asciiArt.txt")
-    .then((response) => response.text())
-    .then((asciiArt) => {
+    .then(response => response.text())
+    .then(asciiArt => {
       updateLog(asciiArt, true);
-      updateRoomAndItems(player, gameState);
+      initializeMap().then(coreRooms => {
+        updateRoomAndItems(player, gameState);
+      }).catch(error => {
+        console.error('Error initializing the map:', error);
+      });
     })
-    .catch((error) => console.error("Error loading ASCII art:", error));
+    .catch(error => console.error("Error loading ASCII art:", error));
 }
 
 function initializeGame() {

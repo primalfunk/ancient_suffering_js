@@ -1,0 +1,135 @@
+{
+    "forest": {
+      "glen": {
+        "titles": ["Quiet Glen", "Shaded Glen", "Mossy Glen"],
+        "descriptions": [
+          "A tranquil glen surrounded by towering trees. The sunlight barely touches the ground, casting long shadows.",
+          "This shaded glen is cool and peaceful, with moss-covered rocks and the sound of distant birds.",
+          "You step into a mossy glen, its floor covered in soft, damp moss. The trees seem to sway with the breeze."
+        ],
+        "npcs": [],
+        "items": []
+      },
+      "vale": {
+        "titles": ["Hidden Vale", "Whispering Vale", "Foggy Vale"],
+        "descriptions": [
+          "A hidden vale deep in the forest. The air is thick with the scent of pine, and the ground is uneven with roots.",
+          "You hear the whispers of wind through the trees as you step into the vale. Mist hangs low, swirling with every breath of air.",
+          "The fog in this vale is thick, making it hard to see more than a few steps ahead. The trees loom like silent sentinels."
+        ],
+        "npcs": [],
+        "items": []
+      }
+    },
+    "castle": {
+      "portcullis": {
+        "titles": ["Rusty Portcullis", "Iron Gate", "Fortified Entrance"],
+        "descriptions": [
+          "The rusty portcullis creaks as it sways in the wind. Vines have started to grow around its base.",
+          "A massive iron gate blocks your path. The hinges look like they haven’t moved in ages.",
+          "This fortified entrance stands tall, with arrowslits carved into the walls nearby."
+        ],
+        "npcs": [],
+        "items": []
+      },
+      "throne_room": {
+        "titles": ["King's Throne Room", "Grand Throne Hall", "Royal Chamber"],
+        "descriptions": [
+          "A grand hall stretches out before you, dominated by an ornate throne at the far end. The room is cold and silent.",
+          "The throne room is vast, with banners hanging from the walls. Dust motes float in the beams of light filtering through narrow windows.",
+          "This royal chamber is richly adorned, with tapestries depicting long-forgotten battles. The throne looks unused."
+        ],
+        "npcs": [],
+        "items": []
+      }
+    },
+    "temple": {
+      "altar": {
+        "titles": ["Temple Altar", "Sacred Altar", "Mystic Altar"],
+        "descriptions": [
+          "A stone altar sits at the center of the room, surrounded by flickering candles. The air is thick with incense.",
+          "The sacred altar is adorned with offerings of fruit and flowers, and a sense of reverence permeates the space.",
+          "This mystic altar is carved with strange symbols that glow faintly in the dark. A hum of energy fills the air."
+        ],
+        "npcs": [],
+        "items": []
+      },
+      "sanctum": {
+        "titles": ["Inner Sanctum", "Holy Chamber", "Sanctuary"],
+        "descriptions": [
+          "You step into the inner sanctum, a place of worship and meditation. The quiet here is almost overwhelming.",
+          "The holy chamber is small and intimate, with walls covered in faded murals. A soft light illuminates the room.",
+          "This sanctuary is bathed in soft, warm light. The air feels thick with centuries of devotion and prayer."
+        ],
+        "npcs": [],
+        "items": []
+      }
+    },
+    "swamp": {
+      "bog": {
+        "titles": ["Muddy Bog", "Quicksand Mire", "Sinking Swamp"],
+        "descriptions": [
+          "You step into a muddy bog, the ground soft and treacherous beneath your feet. The air smells of decay.",
+          "This mire is thick with quicksand and overgrown with reeds. Each step feels like it could be your last.",
+          "The swamp is dense, and the thick mud threatens to pull you under. The smell of rot hangs in the air."
+        ],
+        "npcs": [],
+        "items": []
+      },
+      "marsh": {
+        "titles": ["Reeking Marsh", "Foggy Marsh", "Toxic Marsh"],
+        "descriptions": [
+          "The marsh is reeking with the smell of stagnant water and rot. Insects buzz loudly all around you.",
+          "A foggy marsh stretches out, with small pools of water reflecting the dim light. The ground squelches underfoot.",
+          "This toxic marsh feels hostile, with the air thick with poisonous fumes. The plants here are twisted and unnatural."
+        ],
+        "npcs": [],
+        "items": []
+      }
+    },
+    "mountain": {
+      "peak": {
+        "titles": ["Snowy Peak", "Craggy Summit", "Mountain Ridge"],
+        "descriptions": [
+          "The snow-capped peak offers a breathtaking view of the surrounding landscape. The air is thin and cold.",
+          "You stand on a craggy summit, with sharp rocks jutting out in every direction. The wind howls around you.",
+          "The mountain ridge stretches out, with steep drops on either side. The path is narrow, and the air is cold."
+        ],
+        "npcs": [],
+        "items": []
+      },
+      "cave": {
+        "titles": ["Dark Cave", "Icy Cavern", "Forgotten Grotto"],
+        "descriptions": [
+          "The cave is dark and foreboding. The sound of dripping water echoes throughout the chamber.",
+          "This icy cavern glistens with frost. Every breath creates a cloud of steam in the cold air.",
+          "The forgotten grotto is filled with ancient carvings and strange symbols. The air is damp and cold."
+        ],
+        "npcs": [],
+        "items": []
+      }
+    },
+    "plain": {
+      "meadow": {
+        "titles": ["Golden Meadow", "Wide Plain", "Open Grassland"],
+        "descriptions": [
+          "A vast golden meadow stretches out before you, with tall grass swaying gently in the wind.",
+          "The wide plain is almost featureless, with nothing but grass and sky as far as the eye can see.",
+          "The open grassland feels peaceful and quiet, with the occasional tree dotting the horizon."
+        ],
+        "npcs": [],
+        "items": []
+      },
+      "hill": {
+        "titles": ["Grassy Hill", "Rolling Hill", "Steep Incline"],
+        "descriptions": [
+          "You stand atop a grassy hill, looking out over the surrounding countryside. The wind feels refreshing here.",
+          "The rolling hill rises and falls in soft waves, with patches of wildflowers dotting the landscape.",
+          "This steep incline is challenging to climb, but the view from the top is worth the effort."
+        ],
+        "npcs": [],
+        "items": []
+      }
+    }
+  }
+  
