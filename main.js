@@ -8,14 +8,16 @@ import { updateLog } from "./ui.js";
 
 const gameState = new GameStateManager();
 const player = new Player();
-player.currentRoom = "room1";
 
 function showAsciiArt() {
   fetch("asciiArt.txt")
     .then(response => response.text())
     .then(asciiArt => {
       updateLog(asciiArt, true);
+      
       initializeMap().then(coreRooms => {
+        const firstRoomKey = Object.keys(coreRooms)[0];
+        player.currentRoom = firstRoomKey;
         updateRoomAndItems(player, gameState);
       }).catch(error => {
         console.error('Error initializing the map:', error);

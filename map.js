@@ -46,8 +46,11 @@ function getRandomRoomData(roomType, templateType = 'core', specificRoom = null)
   };
 }
 
-
 function getAdjacentPositions(position) {
+  if (!position || typeof position !== 'string') {
+    throw new Error(`Invalid position: ${position}`);
+  }
+  
   const [x, y] = position.split(',').map(Number);
   return {
     north: `${x},${y - 1}`,
@@ -57,37 +60,109 @@ function getAdjacentPositions(position) {
   };
 }
 
-// Place core rooms on a grid
 function placeCoreRoomsOnGrid() {
   const grid = {};
   const positions = ["0,0", "0,1", "0,2", "1,0", "1,1", "1,2", "2,1"];
   const shuffledPositions = shuffleArray(positions);
   const roomKeys = ['chapel', 'garden', 'alley', 'library', 'gym', 'church', 'outpost'];
   const rooms = {};
-  
+
   roomKeys.forEach((roomKey, index) => {
     const position = shuffledPositions[index];
-    grid[position] = `room${index + 1}`;
-    rooms[`room${index + 1}`] = getRandomRoomData(roomKey);
+    const roomId = `room${index + 1}`;  // Ensure correct room IDs (e.g., room1)
+    grid[position] = roomId;
+    rooms[roomId] = getRandomRoomData(roomKey);
   });
 
   return { rooms, grid };
 }
 
 function placeOuterRoomsOnGrid(grid, existingRooms) {
-  const outerPositions = ["-1,0", "-1,1", "-1,2", "0,-1", "1,-1", "2,-1", "3,0", "3,1", "3,2"];
-  const shuffledOuterPositions = shuffleArray(outerPositions);
   const outerRoomZones = ['forest', 'castle', 'temple', 'swamp', 'mountain', 'plain'];
-  const specificRooms = ['glen', 'portcullis', 'altar', 'bog', 'peak', 'meadow'];  // Specific rooms within each zone
+  const zoneClusters = { // Define how many rooms to generate per zone
+      forest: 8,
+      castle: 10,
+      temple: 9,
+      swamp: 12,
+      mountain: 11,
+      plain: 9
+  };
   const rooms = existingRooms;
+  let roomCounter = Object.keys(rooms).length + 1;
 
-  outerRoomZones.forEach((zoneType, index) => {
-    const position = shuffledOuterPositions[index];
-    grid[position] = `outerRoom${index + 1}`;
-    rooms[`outerRoom${index + 1}`] = getRandomRoomData(zoneType, 'outer', specificRooms[index]);  // Pass specific room here
+  // Loop through each zone
+  outerRoomZones.forEach(zoneType => {
+      const clusterSize = zoneClusters[zoneType];
+      let clusterPosition = getClusterStartingPosition(grid); // Generate a random starting position for the cluster
+
+      // If no starting position available, skip this zone
+      if (!clusterPosition) {
+          console.warn(`No available starting positions for ${zoneType}. Skipping.`);
+          return;
+      }
+
+      // For each zone, generate multiple rooms in a cluster
+      for (let i = 0; i < clusterSize; i++) {
+          const newRoomKey = `outerRoom${roomCounter}`;
+          grid[clusterPosition] = newRoomKey;
+
+          // Randomly choose a specific room template (e.g., glen, vale, etc.)
+          const specificRoom = getRandomSpecificRoomForZone(zoneType);
+          rooms[newRoomKey] = getRandomRoomData(zoneType, 'outer', specificRoom);
+
+          // Update cluster position to the next adjacent one, ensuring it doesn't overlap existing rooms
+          clusterPosition = getNextClusterPosition(clusterPosition, grid);
+          if (!clusterPosition) {
+              console.warn(`No more available adjacent positions for ${zoneType}. Stopping cluster.`);
+              break; // Break if no more adjacent positions are available
+          }
+          roomCounter++;
+      }
   });
 
   return { rooms, grid };
+}
+function getClusterStartingPosition(grid) {
+  // Expand the potential starting positions for clusters
+  const outerPositions = [
+      "-4,-3", "-4,-2", "-4,-1", "-4,0", "-4,1", "-4,2", "-4,3", "-4,4",
+      "-3,-3", "-3,3", "-3,4",
+      "-2,-3", "-2,4", 
+      "-1,4", "0,4", "1,4", "2,4", "3,3", "3,4"
+  ];
+  const availablePositions = outerPositions.filter(pos => !grid[pos]);
+
+  // Handle case where no positions are available
+  if (availablePositions.length === 0) {
+      console.warn("No available positions for cluster placement. Reducing number of rooms.");
+      return null;  // Return null if no available starting positions
+  }
+
+  return shuffleArray(availablePositions)[0];
+}
+
+function getNextClusterPosition(currentPosition, grid) {
+  const adjPositions = getAdjacentPositions(currentPosition);
+  const availablePositions = Object.values(adjPositions).filter(pos => !grid[pos]);
+
+  if (availablePositions.length === 0) {
+      console.warn(`No available positions adjacent to ${currentPosition}. Relocating cluster.`);
+      return getClusterStartingPosition(grid); // Relocate to a new starting position if stuck
+  }
+
+  return shuffleArray(availablePositions)[0];
+}
+
+function getRandomSpecificRoomForZone(zoneType) {
+  const specificRooms = {
+      forest: ['glen', 'vale'],
+      castle: ['portcullis', 'throne_room'],
+      temple: ['altar', 'sanctum'],
+      swamp: ['bog', 'marsh'],
+      mountain: ['peak', 'cave'],
+      plain: ['meadow', 'hill']
+  };
+  return shuffleArray(specificRooms[zoneType])[0]; // Randomly select a specific room for this zone
 }
 
 function generateRoomExits(rooms, grid) {
