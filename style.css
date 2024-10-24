@@ -2,6 +2,7 @@ body {
   background-color: black;
   color: green;
   font-family: 'Courier New', monospace;
+  font-size: 26px;
 }
 
 #game-container {
@@ -86,4 +87,31 @@ button:disabled {
 .overlay-content p {
   font-size: 18px;
   margin-bottom: 20px;
+}
+
+.inventory-item-btn {
+  padding: 10px;
+  margin: 5px auto;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #ccc;
+  border: none;
+  border-radius: 5px;
+  display: block;
+}
+
+.item-options {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px auto;
+}
+
+.item-options button {
+  margin: 5px 0;
+  padding: 5px;
+  font-size: 14px;
+  background-color: #ddd;
+  border: none;
+  border-radius: 3px;
 }

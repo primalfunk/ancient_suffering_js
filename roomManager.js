@@ -5,23 +5,28 @@ import { updateLog, updateButtons, showTalkButton, hideTalkButton, showPickUpBut
 import { move } from './traversal.js';
 
 export function updateRoom(player, gameState) {
-    if (!gameState.isTraversal()) return;
+  if (!gameState || !gameState.isTraversal || !gameState.isTraversal()) {
+      // If gameState isn't in traversal mode, log a warning or skip without throwing an error
+      console.warn('gameState is not in traversal mode. Skipping room update.');
+      return;
+  }
 
-    const currentRoom = getRoom(player.currentRoom);
-    updateLog(`*-* ${currentRoom.title} *-*`);
-    updateLog(currentRoom.description);
+  const currentRoom = getRoom(player.currentRoom);
+  updateLog(`*-* ${currentRoom.title} *-*`);
+  updateLog(currentRoom.description);
 
-    if (currentRoom.npcs.length > 0) {
-        const npc = getNpc(currentRoom.npcs[0]);
-        updateLog(`You see ${npc.name} here.`);
-        showTalkButton();
-    } else {
-        hideTalkButton();
-    }
+  if (currentRoom.npcs.length > 0) {
+      const npc = getNpc(currentRoom.npcs[0]);
+      updateLog(`You see ${npc.name} here.`);
+      showTalkButton();
+  } else {
+      hideTalkButton();
+  }
 
-    updateButtons(currentRoom.exits, (direction) => move(direction, player, gameState));
-    showInventoryButton(player);
+  updateButtons(currentRoom.exits, (direction) => move(direction, player, gameState));
+  showInventoryButton(player);
 }
+
 
 export function loadItemsInRoom(player) {
     const room = getRoom(player.currentRoom);

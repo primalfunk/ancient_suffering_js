@@ -1,4 +1,4 @@
-import { handlePickUp } from "./roomManager.js";
+import { handlePickUp, updateRoomAndItems } from "./roomManager.js";
 
 export function updateLog(message, isPreformatted = false) {
   const textLog = document.getElementById("text-log");
@@ -135,25 +135,64 @@ export function showInventoryButton(player) {
   }
 }
 
-export function showInventoryModal(player) {
+export function showInventoryModal(player, gameState) {
   const inventoryModal = document.getElementById('inventory-modal');
   const inventoryList = document.getElementById('inventory-list');
   const closeInventoryBtn = document.getElementById('close-inventory-btn');
 
-  // Clear existing items in the inventory list
   inventoryList.innerHTML = '';
 
-  // Add each item from the player's inventory
   player.inventory.forEach(item => {
-    const li = document.createElement('li');
-    li.textContent = `${item.name} (${item.type})`;
-    inventoryList.appendChild(li);
+    const itemButton = document.createElement('button');
+    itemButton.textContent = item.name;
+    itemButton.classList.add('inventory-item-btn');
+    itemButton.style.display = 'block';
+    itemButton.style.margin = '0 auto';
+    const optionsDiv = document.createElement('div');
+    optionsDiv.classList.add('item-options');
+    optionsDiv.style.display = 'none';
+    optionsDiv.style.textAlign = 'center';
+    optionsDiv.style.margin = '0 auto';
+
+    if (item.type === 'weapon' || item.type === 'armor') {
+      const equipBtn = document.createElement('button');
+      equipBtn.textContent = player.isEquipped(item) ? 'Unequip' : 'Equip';
+      equipBtn.onclick = () => {
+        if (player.isEquipped(item)) {
+          player.unequipItem(item);
+          equipBtn.textContent = 'Equip';
+        } else {
+          player.equipItem(item);
+          equipBtn.textContent = 'Unequip';
+        }
+      };
+      optionsDiv.appendChild(equipBtn);
+    }
+
+    const dropBtn = document.createElement('button');
+    dropBtn.textContent = 'Drop';
+    dropBtn.onclick = () => {
+      player.dropItem(item);
+      updateRoomAndItems(player, gameState);
+    
+      // Debugging to check modal reference
+      const inventoryModal = document.getElementById('inventory-modal');
+      console.log("Modal reference:", inventoryModal);  // Check if the modal is found
+      inventoryModal.style.display = 'none';
+    };
+    optionsDiv.appendChild(dropBtn);
+
+    itemButton.onclick = () => {
+      itemButton.style.display = 'none';
+      optionsDiv.style.display = 'block';
+    };
+
+    inventoryList.appendChild(itemButton);
+    inventoryList.appendChild(optionsDiv);
   });
 
-  // Show the modal
   inventoryModal.style.display = 'flex';
 
-  // Add the close button functionality
   closeInventoryBtn.onclick = () => {
     inventoryModal.style.display = 'none';
   };
