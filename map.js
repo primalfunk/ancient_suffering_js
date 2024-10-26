@@ -1,5 +1,5 @@
 let roomTemplates = null;
-let outerTemplates = null;  // New outer room templates
+let outerTemplates = null;
 
 const directions = ['north', 'south', 'east', 'west'];
 const oppositeDirection = {
@@ -9,7 +9,6 @@ const oppositeDirection = {
   west: 'east'
 };
 
-// Utility function to shuffle an array
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -22,7 +21,6 @@ function getRandomRoomData(roomType, templateType = 'core', specificRoom = null)
   const templates = templateType === 'outer' ? outerTemplates : roomTemplates;
   let template;
   
-  // If it's an outer room, get the specific room data (like glen under forest)
   if (templateType === 'outer') {
     if (specificRoom && templates[roomType] && templates[roomType][specificRoom]) {
       template = templates[roomType][specificRoom];
@@ -33,7 +31,6 @@ function getRandomRoomData(roomType, templateType = 'core', specificRoom = null)
     template = templates[roomType];
   }
   
-  // Randomly select a title and description
   const title = template.titles[Math.floor(Math.random() * template.titles.length)];
   const description = template.descriptions[Math.floor(Math.random() * template.descriptions.length)];
   
@@ -69,7 +66,7 @@ function placeCoreRoomsOnGrid() {
 
   roomKeys.forEach((roomKey, index) => {
     const position = shuffledPositions[index];
-    const roomId = `room${index + 1}`;  // Ensure correct room IDs (e.g., room1)
+    const roomId = `room${index + 1}`;
     grid[position] = roomId;
     rooms[roomId] = getRandomRoomData(roomKey);
   });
@@ -79,7 +76,7 @@ function placeCoreRoomsOnGrid() {
 
 function placeOuterRoomsOnGrid(grid, existingRooms) {
   const outerRoomZones = ['forest', 'castle', 'temple', 'swamp', 'mountain', 'plain'];
-  const zoneClusters = { // Define how many rooms to generate per zone
+  const zoneClusters = {
       forest: 8,
       castle: 10,
       temple: 9,
@@ -90,31 +87,25 @@ function placeOuterRoomsOnGrid(grid, existingRooms) {
   const rooms = existingRooms;
   let roomCounter = Object.keys(rooms).length + 1;
 
-  // Loop through each zone
   outerRoomZones.forEach(zoneType => {
       const clusterSize = zoneClusters[zoneType];
-      let clusterPosition = getClusterStartingPosition(grid); // Generate a random starting position for the cluster
+      let clusterPosition = getClusterStartingPosition(grid);
 
-      // If no starting position available, skip this zone
       if (!clusterPosition) {
           console.warn(`No available starting positions for ${zoneType}. Skipping.`);
           return;
       }
 
-      // For each zone, generate multiple rooms in a cluster
       for (let i = 0; i < clusterSize; i++) {
           const newRoomKey = `outerRoom${roomCounter}`;
           grid[clusterPosition] = newRoomKey;
-
-          // Randomly choose a specific room template (e.g., glen, vale, etc.)
           const specificRoom = getRandomSpecificRoomForZone(zoneType);
           rooms[newRoomKey] = getRandomRoomData(zoneType, 'outer', specificRoom);
 
-          // Update cluster position to the next adjacent one, ensuring it doesn't overlap existing rooms
           clusterPosition = getNextClusterPosition(clusterPosition, grid);
           if (!clusterPosition) {
               console.warn(`No more available adjacent positions for ${zoneType}. Stopping cluster.`);
-              break; // Break if no more adjacent positions are available
+              break;
           }
           roomCounter++;
       }
@@ -123,7 +114,6 @@ function placeOuterRoomsOnGrid(grid, existingRooms) {
   return { rooms, grid };
 }
 function getClusterStartingPosition(grid) {
-  // Expand the potential starting positions for clusters
   const outerPositions = [
       "-4,-3", "-4,-2", "-4,-1", "-4,0", "-4,1", "-4,2", "-4,3", "-4,4",
       "-3,-3", "-3,3", "-3,4",
@@ -132,10 +122,9 @@ function getClusterStartingPosition(grid) {
   ];
   const availablePositions = outerPositions.filter(pos => !grid[pos]);
 
-  // Handle case where no positions are available
   if (availablePositions.length === 0) {
       console.warn("No available positions for cluster placement. Reducing number of rooms.");
-      return null;  // Return null if no available starting positions
+      return null;
   }
 
   return shuffleArray(availablePositions)[0];
@@ -147,7 +136,7 @@ function getNextClusterPosition(currentPosition, grid) {
 
   if (availablePositions.length === 0) {
       console.warn(`No available positions adjacent to ${currentPosition}. Relocating cluster.`);
-      return getClusterStartingPosition(grid); // Relocate to a new starting position if stuck
+      return getClusterStartingPosition(grid);
   }
 
   return shuffleArray(availablePositions)[0];
@@ -162,7 +151,7 @@ function getRandomSpecificRoomForZone(zoneType) {
       mountain: ['peak', 'cave'],
       plain: ['meadow', 'hill']
   };
-  return shuffleArray(specificRooms[zoneType])[0]; // Randomly select a specific room for this zone
+  return shuffleArray(specificRooms[zoneType])[0];
 }
 
 function generateRoomExits(rooms, grid) {
@@ -183,7 +172,6 @@ function generateRoomExits(rooms, grid) {
 
 export async function initializeMap() {
   try {
-    // Load both core room templates and outer room templates
     const [coreResponse, outerResponse] = await Promise.all([
       fetch('./roomTemplates.json'),
       fetch('./outerTemplates.json')
@@ -193,29 +181,24 @@ export async function initializeMap() {
     console.log('Room templates loaded:', roomTemplates);
     console.log('Outer room templates loaded:', outerTemplates);
 
-    // Place core rooms first
     const { rooms: coreRooms, grid: coreGrid } = placeCoreRoomsOnGrid();
 
-    // Extend the map with outer rooms
     const { rooms: fullMapRooms, grid: fullGrid } = placeOuterRoomsOnGrid(coreGrid, coreRooms);
 
-    // Generate exits for all rooms
     generateRoomExits(fullMapRooms, fullGrid);
 
-    return fullMapRooms; // Return the complete map with core + outer rooms
+    return fullMapRooms;
   } catch (error) {
     console.error('Error loading room templates:', error);
   }
 }
 
-export let rooms = {}; // Declare an empty rooms object for now
+export let rooms = {};
 
-// Initialize the rooms only after the templates are loaded
 initializeMap().then(fullMapRooms => {
-  rooms = fullMapRooms; // Set the rooms once they are generated
+  rooms = fullMapRooms;
 });
 
-// Getter function for rooms
 export function getRoom(roomId) {
   return rooms[roomId];
 }

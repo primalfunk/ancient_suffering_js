@@ -1,4 +1,5 @@
 import { handlePickUp, updateRoomAndItems } from "./roomManager.js";
+import { getRoom } from "./map.js";
 
 export function updateLog(message, isPreformatted = false) {
   const textLog = document.getElementById("text-log");
@@ -141,59 +142,77 @@ export function showInventoryModal(player, gameState) {
   const closeInventoryBtn = document.getElementById('close-inventory-btn');
 
   inventoryList.innerHTML = '';
-
   player.inventory.forEach(item => {
-    const itemButton = document.createElement('button');
-    itemButton.textContent = item.name;
-    itemButton.classList.add('inventory-item-btn');
-    itemButton.style.display = 'block';
-    itemButton.style.margin = '0 auto';
-    const optionsDiv = document.createElement('div');
-    optionsDiv.classList.add('item-options');
-    optionsDiv.style.display = 'none';
-    optionsDiv.style.textAlign = 'center';
-    optionsDiv.style.margin = '0 auto';
+      // Create the main item button
+      const itemButton = document.createElement('button');
+      itemButton.textContent = item.name;
+      itemButton.classList.add('inventory-item-btn');
 
-    if (item.type === 'weapon' || item.type === 'armor') {
-      const equipBtn = document.createElement('button');
-      equipBtn.textContent = player.isEquipped(item) ? 'Unequip' : 'Equip';
-      equipBtn.onclick = () => {
-        if (player.isEquipped(item)) {
-          player.unequipItem(item);
-          equipBtn.textContent = 'Equip';
-        } else {
-          player.equipItem(item);
-          equipBtn.textContent = 'Unequip';
-        }
+      const optionsDiv = document.createElement('div');
+      optionsDiv.classList.add('item-options');
+      optionsDiv.style.display = 'none';
+
+      if (item.type === 'weapon' || item.type === 'armor') {
+          const equipBtn = document.createElement('button');
+          equipBtn.classList.add('inventory-item-btn');
+          equipBtn.textContent = player.isEquipped(item) ? 'Unequip' : 'Equip';
+          equipBtn.onclick = () => {
+              if (player.isEquipped(item)) {
+                  player.unequipItem(item);
+                  equipBtn.textContent = 'Equip';
+              } else {
+                  player.equipItem(item);
+                  equipBtn.textContent = 'Unequip';
+              }
+          };
+          optionsDiv.appendChild(equipBtn);
+      }
+
+      const dropBtn = document.createElement('button');
+      dropBtn.classList.add('inventory-item-btn');
+      dropBtn.textContent = 'Drop';
+      dropBtn.onclick = () => {
+          player.dropItem(item);
+          updateRoomAndItems(player, gameState);
+          inventoryModal.style.display = 'none';
       };
-      optionsDiv.appendChild(equipBtn);
-    }
+      optionsDiv.appendChild(dropBtn);
 
-    const dropBtn = document.createElement('button');
-    dropBtn.textContent = 'Drop';
-    dropBtn.onclick = () => {
-      player.dropItem(item);
-      updateRoomAndItems(player, gameState);
-    
-      // Debugging to check modal reference
-      const inventoryModal = document.getElementById('inventory-modal');
-      console.log("Modal reference:", inventoryModal);  // Check if the modal is found
-      inventoryModal.style.display = 'none';
-    };
-    optionsDiv.appendChild(dropBtn);
+      itemButton.onclick = () => {
+          itemButton.style.display = 'none';
+          optionsDiv.style.display = 'flex';
+      };
 
-    itemButton.onclick = () => {
-      itemButton.style.display = 'none';
-      optionsDiv.style.display = 'block';
-    };
-
-    inventoryList.appendChild(itemButton);
-    inventoryList.appendChild(optionsDiv);
+      inventoryList.appendChild(itemButton);
+      inventoryList.appendChild(optionsDiv);
   });
 
   inventoryModal.style.display = 'flex';
 
   closeInventoryBtn.onclick = () => {
-    inventoryModal.style.display = 'none';
+      inventoryModal.style.display = 'none';
   };
+}
+
+export function disableTraversalButtons() {
+  const buttons = document.querySelectorAll("#north-btn, #south-btn, #east-btn, #west-btn, #talk-btn, #pick-up-btn");
+  buttons.forEach(button => button.style.display = 'none');
+}
+
+export function enableTraversalButtons(player) {
+  const directionalButtons = document.querySelectorAll("#north-btn, #south-btn, #east-btn, #west-btn");
+  directionalButtons.forEach(button => button.style.display = 'block');
+  const currentRoom = getRoom(player.currentRoom);
+  const talkButton = document.getElementById("talk-btn");
+  if (currentRoom && currentRoom.npcs && currentRoom.npcs.length > 0) {
+      talkButton.style.display = 'block';
+  } else {
+      talkButton.style.display = 'none';
+  }
+  const pickUpButton = document.getElementById("pick-up-btn");
+  if (currentRoom && currentRoom.items && currentRoom.items.length > 0) {
+      pickUpButton.style.display = 'block';
+  } else {
+      pickUpButton.style.display = 'none';
+  }
 }

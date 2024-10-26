@@ -22,5 +22,9 @@ export class GameStateManager {
     isDialogue() {
       return this.currentState === 'dialogue';
     }
+
+    isConversation() {
+      return this.currentState === 'conversation';
+    }
   }
   

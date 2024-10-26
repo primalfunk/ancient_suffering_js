@@ -6,7 +6,6 @@ import { move } from './traversal.js';
 
 export function updateRoom(player, gameState) {
   if (!gameState || !gameState.isTraversal || !gameState.isTraversal()) {
-      // If gameState isn't in traversal mode, log a warning or skip without throwing an error
       console.warn('gameState is not in traversal mode. Skipping room update.');
       return;
   }

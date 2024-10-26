@@ -6,7 +6,7 @@ import { getNpc, startNpcInteraction } from "./npcs.js";
 import { updateRoomAndItems } from "./roomManager.js";
 import { updateLog } from "./ui.js";
 
-const gameState = new GameStateManager();
+export const gameState = new GameStateManager();
 const player = new Player();
 
 function showAsciiArt() {

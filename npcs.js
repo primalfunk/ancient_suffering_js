@@ -1,4 +1,5 @@
-import { updateLog, showYesNoChoice } from "./ui.js";
+import { updateLog, showYesNoChoice, disableTraversalButtons, enableTraversalButtons } from './ui.js';
+import { gameState } from './main.js'; 
 
 export class NPC {
   constructor(name, npcClass, levelThresholds, dialogues, type = "generic") {
@@ -77,14 +78,54 @@ export function getNpc(npcId) {
 
 export function startNpcInteraction(npc, player) {
   if (npc && typeof npc.interact === 'function') {
-    const result = npc.interact(player);
+      gameState.setState('conversation'); // Set game state to conversation
+      disableTraversalButtons(); // Disable traversal buttons during conversation
 
-    updateLog(result.message);
+      const result = npc.interact(player);
+      const dialogueLines = buildDialogueSequence(npc, player);
 
-    if (result.choice) {
-      showYesNoChoice(npc, player);
-    }
+      // Display dialogue and only show the choice overlay if relevant
+      displayDialogueSequence(dialogueLines, () => {
+          if (result.choice) {
+              showYesNoChoice(npc, player); // Show Yes/No choice only after dialogue if applicable
+          }
+          gameState.setState('traversal'); // Return to traversal state
+          enableTraversalButtons(player); // Re-enable traversal buttons
+      });
   } else {
-    console.error("Invalid NPC or missing interact method.");
+      console.error("Invalid NPC or missing interact method.");
   }
+}
+
+// Refined buildDialogueSequence to recognize player’s current class
+function buildDialogueSequence(npc, player) {
+  console.log(`npc class is ${npc.npcClass}, player class is ${player.class}`);
+  if (player.class === npc.npcClass) {  // Case: Player is already in the NPC's class
+      if (player.experience >= npc.levelThresholds[player.level]) {
+          return [
+              `${npc.name}: Greetings, ${player.class}. It seems you're ready to level up.`,
+              `${npc.name}: Shall we proceed with your training?`
+          ];
+      } else {
+          const expNeeded = npc.levelThresholds[player.level] - player.experience;
+          return [
+              `${npc.name}: Greetings, ${player.class}.`,
+              `${npc.name}: You need to earn ${expNeeded} more experience to reach the next level.`
+          ];
+      }
+  } else {  // Case: Player is not in the NPC's class
+      return [
+          `${npc.name}: Ah, a ${player.class}. Would you consider becoming a ${npc.npcClass}?`,
+          `${npc.name}: I can show you the way, if you're interested.`
+      ];
+  }
+}
+
+function displayDialogueSequence(lines, callback) {
+  lines.forEach((line, index) => {
+      setTimeout(() => {
+          updateLog(line);
+          if (index === lines.length - 1 && callback) callback(); // Call callback after final line
+      }, index * 2000); // 2-second delay per line
+  });
 }
