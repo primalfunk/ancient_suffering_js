@@ -17,6 +17,7 @@ export function updateButtons(exits, moveCallback) {
   const talkButton = document.getElementById("talk-btn");
   const pickUpButton = document.getElementById("pick-up-btn");
   const inventoryButton = document.getElementById("inventory-btn");
+  const statusButton = document.getElementById("status-btn");
   directionalButtonContainer.innerHTML = '';
   actionButtonContainer.innerHTML = '';
 
@@ -45,6 +46,9 @@ export function updateButtons(exits, moveCallback) {
   }
   if (inventoryButton) {
     actionButtonContainer.appendChild(inventoryButton); 
+  }
+  if (statusButton) {
+    actionButtonContainer.appendChild(statusButton);
   }
 }
 
@@ -195,7 +199,7 @@ export function showInventoryModal(player, gameState) {
 }
 
 export function disableTraversalButtons() {
-  const buttons = document.querySelectorAll("#north-btn, #south-btn, #east-btn, #west-btn, #talk-btn, #pick-up-btn");
+  const buttons = document.querySelectorAll("#north-btn, #south-btn, #east-btn, #west-btn, #talk-btn, #pick-up-btn, #status-btn");
   buttons.forEach(button => button.style.display = 'none');
 }
 
@@ -203,6 +207,8 @@ export function enableTraversalButtons(player) {
   const directionalButtons = document.querySelectorAll("#north-btn, #south-btn, #east-btn, #west-btn");
   directionalButtons.forEach(button => button.style.display = 'block');
   const currentRoom = getRoom(player.currentRoom);
+  const statusButton = document.getElementById("status-btn");
+  statusButton.style.display = 'block';
   const talkButton = document.getElementById("talk-btn");
   if (currentRoom && currentRoom.npcs && currentRoom.npcs.length > 0) {
       talkButton.style.display = 'block';
@@ -215,4 +221,23 @@ export function enableTraversalButtons(player) {
   } else {
       pickUpButton.style.display = 'none';
   }
+}
+
+export function showPlayerStatus(player) {
+  const statsTable = `
+Stat               : Value
+-------------------:------
+Name               : ${player.name || "Unknown"}
+Class              : ${player.class}
+Level              : ${player.level}
+Experience Points  : ${player.experience}
+HP                 : ${player.hp}
+MP                 : ${player.mp}
+Strength           : ${player.str}
+Dexterity          : ${player.dex}
+Intelligence       : ${player.int}
+Wisdom             : ${player.wis}
+Constitution       : ${player.con}
+  `;
+  updateLog(statsTable, true);  // Output as preformatted text
 }

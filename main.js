@@ -4,7 +4,7 @@ import { move } from "./traversal.js";
 import { initializeMap, getRoom } from "./map.js";
 import { getNpc, startNpcInteraction } from "./npcs.js";
 import { updateRoomAndItems } from "./roomManager.js";
-import { updateLog } from "./ui.js";
+import { updateLog, showPlayerStatus } from "./ui.js";
 
 export const gameState = new GameStateManager();
 const player = new Player();
@@ -42,6 +42,7 @@ document.getElementById("talk-btn").addEventListener("click", () => {
     startNpcInteraction(npc, player);
   }
 });
+document.getElementById("status-btn").addEventListener("click", () => showPlayerStatus(player));
 
 document.getElementById("pick-up-btn").style.display = "none";
 

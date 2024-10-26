@@ -3,6 +3,7 @@ import { updateLog } from './ui.js';
 
 export class Player {
   constructor() {
+    this.name = 'Player1';
     this.class = 'Adventurer';
     this.level = 1;
     this.experience = 0;
